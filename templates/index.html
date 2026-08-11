@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AgriAI Advisor - Smart Farming & Climate Resilience</title>
+  <meta name="description" content="AI-powered crop disease detection and real-time Open-Meteo weather risk intelligence for smart agricultural decision making.">
+  
+  <!-- Google Fonts: Outfit -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Custom Style -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="navbar">
+    <div class="container">
+      <a href="/" class="logo">
+        <div class="logo-icon">🌱</div>
+        <span>AgriAI Advisor</span>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="#home" data-i18n="nav_home">Home</a></li>
+        <li><a href="#how-it-works" data-i18n="nav_how">How It Works</a></li>
+        <li><a href="#features" data-i18n="nav_features">Features</a></li>
+        <li><a href="#about" data-i18n="nav_about">About</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <select id="langSelect" class="lang-selector" aria-label="Select Language">
+          <option value="en">🌐 English</option>
+          <option value="te">🌐 తెలుగు (Telugu)</option>
+          <option value="hi">🌐 हिन्दी (Hindi)</option>
+        </select>
+        <a href="#analyze" class="btn-nav" data-i18n="cta_analyze">Analyze Your Crop</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section id="home" class="hero-section">
+    <div class="container">
+      <div class="hero-badge">
+        <span>🌾 Smart Agronomic Decision Engine</span>
+      </div>
+
+      <h1 class="hero-title" data-i18n="hero_title">
+        From Field Conditions to <span>Smart Farming Decisions</span>.
+      </h1>
+
+      <p class="hero-subtitle" data-i18n="hero_sub">
+        Real-time AI crop disease diagnosis combined with hyper-local weather risk intelligence to protect farmer livelihoods and food security.
+      </p>
+
+      <div class="hero-ctas">
+        <a href="#analyze" class="btn-hero-primary" data-i18n="cta_analyze">
+          <span>Analyze Your Crop</span> ➔
+        </a>
+        <a href="#how-it-works" class="btn-hero-secondary" data-i18n="nav_how">
+          Learn How It Works
+        </a>
+      </div>
+
+      <!-- Hero Stats Banner -->
+      <div class="hero-stats-banner">
+        <div class="stat-card-hero">
+          <div class="stat-icon">🌱</div>
+          <div class="stat-number">15+</div>
+          <div class="stat-label">Crop Disease Classes</div>
+        </div>
+        <div class="stat-card-hero">
+          <div class="stat-icon">🤖</div>
+          <div class="stat-number">MobileNetV2</div>
+          <div class="stat-label">AI Transfer Learning</div>
+        </div>
+        <div class="stat-card-hero">
+          <div class="stat-icon">🌦️</div>
+          <div class="stat-number">Open-Meteo</div>
+          <div class="stat-label">Live Weather Forecast</div>
+        </div>
+        <div class="stat-card-hero">
+          <div class="stat-icon">⏰</div>
+          <div class="stat-number">Best Time</div>
+          <div class="stat-label">Action Window Engine</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Crop Analysis Form Section -->
+  <section id="analyze" class="analysis-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-badge">FARMER INPUT CENTER</span>
+        <h2 class="section-title" data-i18n="section_title_analyze">Analyze Your Crop Health</h2>
+        <p class="section-desc">Provide leaf photo and location to get instant AI disease diagnosis and climate-smart advisory.</p>
+      </div>
+
+      <div class="farmer-card">
+        <form id="analysisForm" enctype="multipart/form-data">
+          
+          <div class="form-grid">
+            <!-- Crop Selection -->
+            <div class="form-group">
+              <label for="cropSelect" class="form-label" data-i18n="crop_label">🌱 Select Crop</label>
+              <select id="cropSelect" name="crop" class="form-select" required>
+                <option value="Tomato" selected>Tomato</option>
+                <option value="Potato">Potato</option>
+                <option value="Corn">Corn (Maize)</option>
+                <option value="Pepper">Pepper (Bell Pepper)</option>
+                <option value="Apple">Apple</option>
+                <option value="Grape">Grape</option>
+                <option value="Other">Other Crop</option>
+              </select>
+            </div>
+
+            <!-- Location Input -->
+            <div class="form-group">
+              <label for="locationInput" class="form-label" data-i18n="loc_label">📍 Location</label>
+              <div class="location-input-group">
+                <input type="text" id="locationInput" name="location" class="form-input" placeholder="Enter your village or city (e.g. Vijayawada)">
+                <button type="button" id="gpsBtn" class="btn-gps" title="Use current GPS location">📍 Use My Location</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Drag and Drop Image Upload -->
+          <div class="dropzone-container">
+            <label class="form-label" data-i18n="upload_label">📷 Upload Leaf Image</label>
+            <div id="dropzone" class="dropzone">
+              <div class="dropzone-icon">🍃</div>
+              <div class="dropzone-title" data-i18n="dropzone_title">Upload a clear photo of the affected leaf</div>
+              <div class="dropzone-sub" data-i18n="dropzone_sub">Supports JPG, JPEG, PNG, WEBP (Max 10MB)</div>
+            </div>
+            <input type="file" id="imageInput" name="image" class="hidden-file-input" accept="image/jpeg,image/jpg,image/png,image/webp">
+
+            <!-- Thumbnail Preview -->
+            <div id="previewContainer" class="preview-container">
+              <img id="previewImage" class="preview-image" src="" alt="Crop Leaf Preview">
+              <button type="button" id="removePreviewBtn" class="btn-remove-preview" title="Remove Image">✕</button>
+            </div>
+          </div>
+
+          <!-- Demo Switch -->
+          <div class="demo-toggle-wrapper">
+            <div class="demo-toggle-info">
+              <span>🧪</span>
+              <span class="demo-toggle-title">Try with Demo Sample Data (Offline / Hackathon Mode)</span>
+            </div>
+            <label class="switch">
+              <input type="checkbox" id="demoToggle" name="is_demo">
+              <span class="slider"></span>
+            </label>
+          </div>
+
+          <!-- Submit Button -->
+          <button type="submit" id="analyzeBtn" class="btn-analyze">
+            <span>Analyze Crop</span> ➔
+          </button>
+        </form>
+
+        <!-- Loading State Overlay -->
+        <div id="loadingOverlay" class="loading-overlay">
+          <div class="spinner"></div>
+          <div class="loading-text" data-i18n="loading_text">Analyzing your crop and checking local weather...</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Results Dashboard Section -->
+  <section id="resultsSection" class="results-section">
+    <div class="container">
+      
+      <!-- Top Banner Summary -->
+      <div class="results-banner">
+        <div class="banner-left">
+          <img id="resImage" class="result-image-thumbnail" src="" alt="Analyzed Leaf">
+          <div class="banner-title-group">
+            <h2 id="resCropDiseaseTitle">Tomato - Late Blight</h2>
+            <div id="resLocationMeta" class="banner-subtitle">Location: Vijayawada | AI Confidence: 92%</div>
+            <span id="resDemoLabel" class="hero-badge" style="display:none; margin-top:0.4rem;">Demo Data</span>
+          </div>
+        </div>
+
+        <div class="risk-gauge-container">
+          <span style="font-size:0.85rem; font-weight:700; color:var(--text-muted); text-transform:uppercase;">Overall Climate Risk</span>
+          <div id="resRiskBadge" class="risk-badge risk-high">
+            ⚠️ HIGH RISK
+          </div>
+        </div>
+      </div>
+
+      <!-- Dashboard Grid -->
+      <div class="dashboard-grid">
+        
+        <!-- 1. Disease Detection & AI Confidence Card -->
+        <div class="card-dash">
+          <div class="card-header-dash">
+            <div class="card-header-icon">🔍</div>
+            <h3>Disease Detection</h3>
+          </div>
+          <div class="stat-pill-list">
+            <div class="stat-pill">
+              <div class="stat-pill-title">Target Crop</div>
+              <div id="valCropType" class="stat-pill-val">Tomato</div>
+            </div>
+            <div class="stat-pill">
+              <div class="stat-pill-title">Detected Disease</div>
+              <div id="valDetectedDisease" class="stat-pill-val">Late Blight</div>
+            </div>
+            <div class="stat-pill">
+              <div class="stat-pill-title">AI Confidence</div>
+              <div id="valConfidenceScore" class="stat-pill-val">92%</div>
+            </div>
+            <div class="stat-pill">
+              <div class="stat-pill-title">AI Model</div>
+              <div class="stat-pill-val" style="font-size:0.95rem; color:var(--dark-earth);">MobileNetV2</div>
+            </div>
+          </div>
+
+          <div id="lowConfidenceAlert" class="low-conf-alert" style="display:none;">
+            ⚠️ Low confidence — please upload a clearer leaf image or consult a local agricultural expert.
+          </div>
+        </div>
+
+        <!-- 2. Weather & Forecast Card -->
+        <div class="card-dash">
+          <div class="card-header-dash">
+            <div class="card-header-icon">🌦️</div>
+            <h3>Live Local Weather</h3>
+          </div>
+          
+          <div class="weather-metrics-grid">
+            <div class="weather-metric-box">
+              <div id="valTemp" class="weather-metric-val">29°C</div>
+              <div class="weather-metric-lbl">Temp</div>
+            </div>
+            <div class="weather-metric-box">
+              <div id="valHumidity" class="weather-metric-val">84%</div>
+              <div class="weather-metric-lbl">Humidity</div>
+            </div>
+            <div class="weather-metric-box">
+              <div id="valRainProb" class="weather-metric-val">72%</div>
+              <div class="weather-metric-lbl">Rain Prob</div>
+            </div>
+            <div class="weather-metric-box">
+              <div id="valWindSpeed" class="weather-metric-val">14 km/h</div>
+              <div class="weather-metric-lbl">Wind</div>
+            </div>
+            <div class="weather-metric-box" style="grid-column: span 2;">
+              <div id="valCondition" class="weather-metric-val" style="font-size:0.95rem;">🌧️ Moderate Rain</div>
+              <div class="weather-metric-lbl">Open-Meteo Synced</div>
+            </div>
+          </div>
+
+          <div style="font-size:0.8rem; font-weight:700; color:var(--text-muted); margin-bottom:0.4rem;">24-HOUR FORECAST</div>
+          <div id="hourlyForecastStrip" class="forecast-hourly-strip">
+            <!-- Hourly boxes populated dynamically -->
+          </div>
+        </div>
+
+        <!-- 3. Weather-based Risk Assessment Card -->
+        <div class="card-dash">
+          <div class="card-header-dash">
+            <div class="card-header-icon">⚠️</div>
+            <h3 data-i18n="weather_risk_title">Weather-based Risk Assessment</h3>
+          </div>
+          <p id="valWeatherRiskText" style="font-size:1.05rem; line-height:1.5; color:var(--text-primary);">
+            High humidity and expected rainfall create high risk for disease spread.
+          </p>
+          <div class="warning-box">
+            <span>📢 Transparency Notice: This risk assessment combines crop vulnerability with live Open-Meteo forecasts for decision support.</span>
+          </div>
+        </div>
+
+        <!-- 4. What's Wrong Card -->
+        <div class="card-dash">
+          <div class="card-header-dash">
+            <div class="card-header-icon">🩺</div>
+            <h3 data-i18n="whats_wrong_title">What's Wrong?</h3>
+          </div>
+          <p id="valWhatsWrong" style="font-size:1.05rem; line-height:1.6; color:var(--text-secondary);">
+            Your tomato leaf shows signs consistent with Late Blight.
+          </p>
+        </div>
+
+        <!-- 5. What Should I Do Card -->
+        <div class="card-dash">
+          <div class="card-header-dash">
+            <div class="card-header-icon">💊</div>
+            <h3 data-i18n="what_to_do_title">What Should I Do?</h3>
+          </div>
+          <p id="valWhatToDo" style="font-size:1.05rem; line-height:1.6; color:var(--text-secondary);">
+            Remove heavily affected plant material and follow locally approved disease-management practices.
+          </p>
+        </div>
+
+        <!-- 6. Prevention Steps Card -->
+        <div class="card-dash">
+          <div class="card-header-dash">
+            <div class="card-header-icon">🛡️</div>
+            <h3 data-i18n="prevention_title">Prevention Steps</h3>
+          </div>
+          <p id="valPrevention" style="font-size:1.05rem; line-height:1.6; color:var(--text-secondary);">
+            Improve airflow around plants and avoid unnecessary leaf wetness.
+          </p>
+          <div id="valWeatherWarning" class="warning-box" style="margin-top:0.8rem;">
+            High humidity and expected rainfall may increase disease spread.
+          </div>
+        </div>
+
+        <!-- 7. Best Time to Act Card -->
+        <div class="best-time-card">
+          <div class="best-time-header">
+            <div style="font-size:2.2rem;">⏰</div>
+            <div>
+              <h3 id="valBestTimeTitle">Best Time to Act</h3>
+              <div style="font-size:0.9rem; opacity:0.85;">Weather & Disease Integrated Action Window</div>
+            </div>
+          </div>
+          <div id="valBestTimeBody" class="best-time-body">
+            Rain expected soon. Avoid applying products that may be washed off by rainfall. Consider preventive actions before the rain when appropriate.
+          </div>
+          <div id="valPesticideNotice" style="font-size:0.85rem; margin-top:1rem; opacity:0.9; font-style:italic;">
+            📌 Note: Follow the product label and local agricultural extension guidance.
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works Section -->
+  <section id="how-it-works" class="how-it-works-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-badge">SIMPLE 4-STEP WORKFLOW</span>
+        <h2 class="section-title">How AgriAI Advisor Works</h2>
+        <p class="section-desc">Empowering farmers with instant field intelligence in four easy steps.</p>
+      </div>
+
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-num">1</div>
+          <div class="step-icon">📷</div>
+          <h3 class="step-title">Upload</h3>
+          <p class="step-desc">Farmer uploads a photo of the affected crop leaf using mobile or desktop.</p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-num">2</div>
+          <div class="step-icon">🤖</div>
+          <h3 class="step-title">Detect</h3>
+          <p class="step-desc">MobileNetV2 AI model analyzes leaf patterns to identify the disease and confidence score.</p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-num">3</div>
+          <div class="step-icon">🌦️</div>
+          <h3 class="step-title">Check Weather</h3>
+          <p class="step-desc">The system retrieves live Open-Meteo weather and upcoming precipitation forecasts.</p>
+        </div>
+
+        <div class="step-card">
+          <div class="step-num">4</div>
+          <div class="step-icon">💡</div>
+          <h3 class="step-title">Advise</h3>
+          <p class="step-desc">Generates simple, actionable advice and optimal weather action windows for the farmer.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section id="features" class="features-section">
+    <div class="container">
+      <div class="section-header">
+        <span class="section-badge">KEY CAPABILITIES</span>
+        <h2 class="section-title">Designed for Farmer Resilience</h2>
+      </div>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">🌱</div>
+          <h3 class="feature-title">Multi-Crop Support</h3>
+          <p class="feature-desc">Tailored disease classification for Tomato, Potato, Corn, Pepper, Apple, Grape, and more.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">🌦️</div>
+          <h3 class="feature-title">Hyper-Local Climate Sync</h3>
+          <p class="feature-desc">Direct Open-Meteo integration converts village location into real-time weather & 24h risk metrics.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">⏰</div>
+          <h3 class="feature-title">Best Time to Act</h3>
+          <p class="feature-desc">Prevents chemical wash-off by telling farmers exactly when it is safer to perform field operations.</p>
+        </div>
+
+        <div class="feature-card">
+          <div class="feature-icon">🌐</div>
+          <h3 class="feature-title">Multi-Language Ready</h3>
+          <p class="feature-desc">Built for local accessibility with English, Telugu (తెలుగు), and Hindi (हिन्दी) UI switching.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer id="about" class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <h4>🌱 AgriAI Advisor</h4>
+          <p>Connecting raw field conditions with expert agronomic guidance for food security and climate resilience.</p>
+        </div>
+        <div>
+          <h5 style="color:#fff; margin-bottom:0.8rem;">Quick Links</h5>
+          <ul style="list-style:none; line-height:2;">
+            <li><a href="#home" style="color:#9ca3af;">Home</a></li>
+            <li><a href="#analyze" style="color:#9ca3af;">Analyze Crop</a></li>
+            <li><a href="#how-it-works" style="color:#9ca3af;">How It Works</a></li>
+          </ul>
+        </div>
+        <div>
+          <h5 style="color:#fff; margin-bottom:0.8rem;">Technology Stack</h5>
+          <p style="font-size:0.9rem;">Flask Backend • MobileNetV2 TensorFlow • Open-Meteo Weather API • Vanilla JS & CSS3</p>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p>© 2026 AgriAI Advisor. Built for Agriculture & Climate Resilience Hackathon.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Script -->
+  <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+</body>
+</html>
